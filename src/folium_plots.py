@@ -43,3 +43,35 @@ def plot_sequences_map(sequence_dfs, save_name):
     # Save the map to an interactive HTML file
     m.save(f"../maps/{save_name}.html")
     print(f"Map saved as {save_name}.html. Open this file in your web browser!")
+
+
+def plot_stops_map(stop_df, save_name, heat=False):
+    # Find the center of the map using the first sequences average coordinates
+    center_lat = stop_df["stop_lat"].mean()
+    center_lon = stop_df["stop_lon"].mean()
+    
+    # Create the base map
+    m = folium.Map(location=[center_lat, center_lon], zoom_start=13, tiles='cartodb positron')
+        
+    # Add dots for the actual stops
+    for _, row in stop_df.iterrows():
+        if heat:
+            color = row["color"]
+            tooltip = f"{row["stop_name"]}, {row["count"]}"
+        else:
+            color = "black"
+            tooltip = f"{row["stop_name"]}"
+
+        folium.CircleMarker(
+            location=[row["stop_lat"], row["stop_lon"]],
+            radius=4,
+            color=color,
+            fill=True,
+            fill_color=color,
+            fill_opacity=0.9,
+            tooltip=tooltip
+        ).add_to(m)
+
+    # Save the map to an interactive HTML file
+    m.save(f"../maps/{save_name}.html")
+    print(f"Map saved as {save_name}.html. Open this file in your web browser!")

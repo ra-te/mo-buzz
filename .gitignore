@@ -3,6 +3,9 @@ data_rt/*
 data_static/*
 data_extract/*
 
+# Map Exports
+maps/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
